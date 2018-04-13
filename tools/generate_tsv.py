@@ -10,6 +10,7 @@
 # ./tools/generate_tsv.py --gpu 0,1,2,3,4,5,6,7 --cfg experiments/cfgs/faster_rcnn_end2end_resnet.yml --def models/vg/ResNet-101/faster_rcnn_end2end/test.prototxt --out test2014_resnet101_faster_rcnn_genome.tsv --net data/faster_rcnn_models/resnet101_faster_rcnn_final.caffemodel --split coco_test2014
 
 #python generate_tsv.py --def ../models/vg/ResNet-101/faster_rcnn_end2end_final/test.prototxt --net ../data/faster_rcnn_models/resnet101_faster_rcnn_final.caffemodel --out chinese_feats --cfg ../experiments/cfgs/faster_rcnn_end2end_resnet.yml --split chinese
+#python generate_tsv.py --def ../models/vg/ResNet-101/faster_rcnn_end2end_final/test.prototxt --net ../data/faster_rcnn_models/resnet101_faster_rcnn_final.caffemodel --out chinese_feats --cfg ../experiments/cfgs/faster_rcnn_end2end_resnet.yml --split chinese
 
 
 import _init_paths
@@ -49,6 +50,13 @@ def load_image_ids(split_name):
         for item in data['images']:
           image_id = int(item['id'])
           filepath = os.path.join('/data/test2014/', item['file_name'])
+          split.append((filepath,image_id))
+    elif split_name == 'coco_train2014':
+      with open('/data/coco/annotations/captions_train2014.json') as f:
+        data = json.load(f)
+        for item in data['images']:
+          image_id = int(item['id'])
+          filepath = os.path.join('/data/train2014/', item['file_name'])
           split.append((filepath,image_id))
     elif split_name == 'coco_test2015':
       with open('/data/coco/annotations/image_info_test2015.json') as f:
